@@ -1,5 +1,10 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 import { User, UserSignupPageProps } from "../types";
@@ -65,6 +70,22 @@ describe("UserSignupPage", () => {
         value: content,
       },
     });
+
+    const expectedUserObject: User = {
+      displayName: "my-display-name",
+      password: "Password",
+      username: "my-user-name",
+    };
+
+    // 비동기 지연 mock
+    const mockAsyncDelayed = () =>
+      jest.fn().mockImplementation(() => {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve({});
+          }, 300);
+        });
+      });
 
     let button: Element,
       displayNameInput: Element,
@@ -156,14 +177,84 @@ describe("UserSignupPage", () => {
       setupForSubmit(props);
       fireEvent.click(button);
 
-      const expectedUserObject: User = {
-        username: "my-user-name",
-        displayName: "my-display-name",
-        password: "Password",
-      };
       expect(props.actions?.postSignup).toHaveBeenCalledWith(
         expectedUserObject
       );
     });
+
+    test("ongoing api call 이 있을 경우 signup 버튼 동작하지 않음", () => {
+      const props: UserSignupPageProps = {
+        actions: {
+          postSignup: mockAsyncDelayed(),
+        },
+      };
+      setupForSubmit(props);
+      fireEvent.click(button);
+      fireEvent.click(button); // 두번 호출
+      expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번만 호출되는지 test
+    });
+
+    test("ongoing api call 이 있을 경우 Spinner render 함", () => {
+      const props: UserSignupPageProps = {
+        actions: {
+          postSignup: mockAsyncDelayed(),
+        },
+      };
+      const { queryByText } = setupForSubmit(props);
+      fireEvent.click(button);
+      const spinner = queryByText("Loading...");
+      expect(spinner).toBeInTheDocument();
+    });
+
+    test("api call 성공적으로 완료되면 Spinner 숨기기", async () => {
+      const props: UserSignupPageProps = {
+        actions: {
+          postSignup: mockAsyncDelayed(),
+        },
+      };
+      const { queryByText } = setupForSubmit(props);
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번 실행될 때까지 대기
+      });
+
+      const spinner = queryByText("Loading...");
+      await waitForElementToBeRemoved(spinner);
+      // 사라질 때까지 대기 (꼭 필요한가? 하지만 현재 코드에선 반드시 있어야만 OK 됨)
+
+      expect(spinner).not.toBeInTheDocument();
+    });
+
+    test("api call 실패하면 Spinner 숨기기", async () => {
+      const props: UserSignupPageProps = {
+        actions: {
+          // reject Promise
+          postSignup: jest.fn().mockImplementation(() => {
+            return new Promise((resolve, reject) => {
+              setTimeout(() => {
+                reject({
+                  response: { data: {} },
+                });
+              }, 300);
+            });
+          }),
+        },
+      };
+      const { queryByText } = setupForSubmit(props);
+      fireEvent.click(button);
+
+      await waitFor(() => {
+        expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번 실행될 때까지 대기
+      });
+
+      const spinner = queryByText("Loading...");
+      await waitForElementToBeRemoved(spinner);
+      // 사라질 때까지 대기 (꼭 필요한가? 하지만 현재 코드에선 반드시 있어야만 OK 됨)
+
+      expect(spinner).not.toBeInTheDocument();
+    });
   });
 });
+
+console.error = () => {};
