@@ -9,7 +9,7 @@
 ### 1. Clone & Install Packages
 
 ```
-git clone https://github.com/seong7/Hoaxify-front.git
+git clone https://github.com/seong7/Hoaxify-Front.git
 
 npm install
 ```
