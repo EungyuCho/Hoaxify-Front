@@ -17,7 +17,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0"
-  }
+    "@testing-library/react": "^11.1.0",
+    "jest-environment-jsdom-sixteen": "^1.0.3"
+  },
+  "proxy": "http://localhost:8080"
 }

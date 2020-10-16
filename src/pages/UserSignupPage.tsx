@@ -6,6 +6,7 @@ export const UserSignupPage: React.FC<UserSignupPageProps> = ({ actions }) => {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [passwordRepeat, setpasswordRepeat] = useState<string>("");
+  const [hasPendingApiCall, setHasPendingApiCall] = useState<boolean>(false);
 
   const onChangeDisplayName: React.ChangeEventHandler<HTMLInputElement> = (
     e
@@ -37,7 +38,15 @@ export const UserSignupPage: React.FC<UserSignupPageProps> = ({ actions }) => {
       displayName: displayName,
       password: password,
     };
-    actions?.postSignup(user);
+    setHasPendingApiCall(true);
+    actions
+      ?.postSignup(user)
+      .then((response) => {
+        setHasPendingApiCall(false);
+      })
+      .catch((error) => {
+        setHasPendingApiCall(false);
+      });
     // console.log(user);
   };
 
@@ -83,7 +92,16 @@ export const UserSignupPage: React.FC<UserSignupPageProps> = ({ actions }) => {
         />
       </div>
       <div className="text-center">
-        <button className="btn btn-primary" onClick={onClickSignup}>
+        <button
+          className="btn btn-primary"
+          onClick={onClickSignup}
+          disabled={hasPendingApiCall}
+        >
+          {hasPendingApiCall && (
+            <div className="spinner-border text-light spinner-border-sm mr-sm-1">
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
           Sign Up
         </button>
       </div>

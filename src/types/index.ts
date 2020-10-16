@@ -6,6 +6,6 @@ export interface User {
 
 export interface UserSignupPageProps {
   actions?: {
-    postSignup(user: User): object;
+    postSignup(user: User): Promise<object>;
   };
 }
