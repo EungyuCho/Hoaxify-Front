@@ -26,7 +26,9 @@ npm test
 npm start
 ```
 
-## Pages Introduction
+## Test Practice
+
+React-Testing-Library 공식문서에 언급된 **[Kent 의 블로그 글](https://kentcdodds.com/blog/write-fewer-longer-tests)** 속 Practice 를 따릅니다.
 
 ## 기술 스택
 
