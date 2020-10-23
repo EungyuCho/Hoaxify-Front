@@ -1,3 +1,5 @@
+// Refactoring 전
+
 import React from "react";
 import {
   render,
@@ -9,7 +11,7 @@ import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 import { User, UserSignupPageProps } from "../types";
 
-describe("UserSignupPage", () => {
+xdescribe("UserSignupPage", () => {
   describe("Layout", () => {
     test("has header of Sign Up", () => {
       const { container } = render(<UserSignupPage />);
@@ -215,9 +217,9 @@ describe("UserSignupPage", () => {
       const { queryByText } = setupForSubmit(props);
       fireEvent.click(button);
 
-      await waitFor(() => {
-        expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번 실행될 때까지 대기
-      });
+      await waitFor(
+        () => expect(props.actions?.postSignup).toHaveBeenCalledTimes(1) // 한번 실행될 때까지 대기
+      );
 
       const spinner = queryByText("Loading...");
       await waitForElementToBeRemoved(spinner);
