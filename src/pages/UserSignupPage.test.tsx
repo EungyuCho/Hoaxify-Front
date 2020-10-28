@@ -5,8 +5,11 @@ import {
   render,
   fireEvent,
   waitForElementToBeRemoved,
+  waitFor,
+  findByText,
+  queryByText,
+  screen,
 } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { UserSignupPage } from "./UserSignupPage";
 import { User, UserSignupPageProps } from "../types";
 
@@ -51,11 +54,12 @@ test("UserSignupPage Layout Test", () => {
 });
 
 describe("UserSignupPage Interaction Test", () => {
-  const changeEvent = (content: string) => ({
-    target: {
-      value: content,
-    },
-  });
+  const changeEvent = (content: string) =>
+    ({
+      target: {
+        value: content,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
 
   test("Input value 들 변경 후 API call 성공 case", async () => {
     // api call fn Mocking 하여 prop 생성
@@ -173,6 +177,36 @@ describe("UserSignupPage Interaction Test", () => {
     // api call 이 실패하고 종료되면 Spinner 숨기기
     await waitForElementToBeRemoved(spinner);
     expect(spinner).not.toBeInTheDocument();
+  });
+
+  test("displayName validation error 가 발생한 case", async () => {
+    const testDisplayNameError =
+      "It must have minimum 4 and maximum 255 characters";
+
+    const validationErrorProps: UserSignupPageProps = {
+      actions: {
+        postSignup: jest.fn().mockRejectedValue({
+          response: {
+            data: {
+              validtationErrors: {
+                displayName: testDisplayNameError,
+              },
+            },
+          },
+        }),
+      },
+    };
+
+    const { container } = render(<UserSignupPage {...validationErrorProps} />);
+
+    const signupButton = container.querySelector("button") as Element;
+    fireEvent.click(signupButton);
+
+    // "Cannot be null" 메세지 render
+    expect(await screen.findByText(testDisplayNameError)).toBeInTheDocument();
+    // expect(await screen.findByRole("span")).toBeInTheDocument();
+
+    screen.debug();
   });
 
   test("userSignupPage 컴포넌트에 prop (action) 이 주어지지 않은 case", () => {

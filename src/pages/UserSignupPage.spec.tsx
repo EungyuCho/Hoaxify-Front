@@ -7,7 +7,6 @@ import {
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
-import "@testing-library/jest-dom/extend-expect";
 import { UserSignupPage } from "./UserSignupPage";
 import { User, UserSignupPageProps } from "../types";
 
