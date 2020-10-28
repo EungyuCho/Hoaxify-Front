@@ -1,3 +1,5 @@
+// Refactoring 후
+
 import React from "react";
 import {
   render,
