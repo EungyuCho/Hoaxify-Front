@@ -1,10 +1,15 @@
+// Refactoring 후
+
 import React from "react";
 import {
   render,
   fireEvent,
   waitForElementToBeRemoved,
+  waitFor,
+  findByText,
+  queryByText,
+  screen,
 } from "@testing-library/react";
-import "@testing-library/jest-dom";
 import { UserSignupPage } from "./UserSignupPage";
 import { User, UserSignupPageProps } from "../types";
 
@@ -49,11 +54,12 @@ test("UserSignupPage Layout Test", () => {
 });
 
 describe("UserSignupPage Interaction Test", () => {
-  const changeEvent = (content: string) => ({
-    target: {
-      value: content,
-    },
-  });
+  const changeEvent = (content: string) =>
+    ({
+      target: {
+        value: content,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
 
   test("Input value 들 변경 후 API call 성공 case", async () => {
     // api call fn Mocking 하여 prop 생성
@@ -84,7 +90,7 @@ describe("UserSignupPage Interaction Test", () => {
     const passwordRepeatInput = queryByPlaceholderText(
       "Repeat your password"
     ) as Element;
-    const button = container.querySelector("button") as Element;
+    const signupButton = container.querySelector("button") as Element;
 
     // API call fn 의 올바른 매개변수 선언
     const expectedUserObject: User = {
@@ -113,7 +119,7 @@ describe("UserSignupPage Interaction Test", () => {
     expect(passwordRepeatInput).toHaveValue("password repeat");
 
     // submit 버튼 클릭
-    fireEvent.click(button);
+    fireEvent.click(signupButton);
 
     // submit 버튼 클릭 시 postSignup() 한번 호출
     expect(succeedingProps.actions?.postSignup).toHaveBeenCalledTimes(1);
@@ -124,7 +130,7 @@ describe("UserSignupPage Interaction Test", () => {
     );
 
     // pending api call 이 있을 경우 signup 버튼 동작하지 않음
-    fireEvent.click(button); // 두번째 클릭
+    fireEvent.click(signupButton); // 두번째 클릭
     expect(succeedingProps.actions?.postSignup).toHaveBeenCalledTimes(1); // 여전히 한번만 호출됨
 
     // pending api call 이 있을 경우 Spinner render 함
@@ -156,10 +162,10 @@ describe("UserSignupPage Interaction Test", () => {
       <UserSignupPage {...failingProps} />
     );
 
-    const button = container.querySelector("button") as Element;
+    const signupButton = container.querySelector("button") as Element;
 
     // submit 버튼 클릭
-    fireEvent.click(button);
+    fireEvent.click(signupButton);
 
     // submit 버튼 클릭 시 postSignup 한번 호출
     expect(failingProps.actions?.postSignup).toBeCalledTimes(1);
@@ -173,7 +179,37 @@ describe("UserSignupPage Interaction Test", () => {
     expect(spinner).not.toBeInTheDocument();
   });
 
-  test("userSignupPage 에 prop (action) 이 주어지지 않은 case", () => {
+  test("displayName validation error 가 발생한 case", async () => {
+    const testDisplayNameError =
+      "It must have minimum 4 and maximum 255 characters";
+
+    const validationErrorProps: UserSignupPageProps = {
+      actions: {
+        postSignup: jest.fn().mockRejectedValue({
+          response: {
+            data: {
+              validtationErrors: {
+                displayName: testDisplayNameError,
+              },
+            },
+          },
+        }),
+      },
+    };
+
+    const { container } = render(<UserSignupPage {...validationErrorProps} />);
+
+    const signupButton = container.querySelector("button") as Element;
+    fireEvent.click(signupButton);
+
+    // "Cannot be null" 메세지 render
+    expect(await screen.findByText(testDisplayNameError)).toBeInTheDocument();
+    // expect(await screen.findByRole("span")).toBeInTheDocument();
+
+    screen.debug();
+  });
+
+  test("userSignupPage 컴포넌트에 prop (action) 이 주어지지 않은 case", () => {
     const { container } = render(<UserSignupPage />);
     const button = container.querySelector("button") as Element;
 
