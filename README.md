@@ -1,5 +1,7 @@
 # Hoaxify
 
+![Node.js CI](https://github.com/seong7/Hoaxify-Front/workflows/Node.js%20CI/badge.svg?branch=dev)
+
 ## Contributors
 
 - [![title](https://img.shields.io/badge/DEVELOPER-김성진-blue)](https://github.com/seong7)
