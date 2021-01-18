@@ -8,7 +8,7 @@ describe('Input Layout Test', () => {
   const testPlaceholder = 'Test Placeholder';
   const testValue = 'Test Value';
   const testOnChange = jest.fn();
-  const testChangedValue = 'Test Changed Valu';
+  const testChangedValue = 'Test Changed Value';
   const testClassNameWithError = 'form-control is-invalid';
   const testClassNameWithNoError = 'form-control is-valid';
   const testClassNameWithDefault = 'form-control';
@@ -40,7 +40,7 @@ describe('Input Layout Test', () => {
     expect(input!.placeholder).toBe(testPlaceholder);
 
     // props.value 에 따라 input value 지정
-    expect(input!.value).toBe(testValue);
+    expect(input!.value).toBe('Test Valu');
 
     // change event 발생
     const event = {
