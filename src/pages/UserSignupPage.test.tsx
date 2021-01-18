@@ -5,9 +5,6 @@ import {
   render,
   fireEvent,
   waitForElementToBeRemoved,
-  waitFor,
-  findByText,
-  queryByText,
   screen,
 } from "@testing-library/react";
 import { UserSignupPage } from "./UserSignupPage";
@@ -188,7 +185,7 @@ describe("UserSignupPage Interaction Test", () => {
         postSignup: jest.fn().mockRejectedValue({
           response: {
             data: {
-              validtationErrors: {
+              validationErrors: {
                 displayName: testDisplayNameError,
               },
             },
@@ -206,7 +203,7 @@ describe("UserSignupPage Interaction Test", () => {
     expect(await screen.findByText(testDisplayNameError)).toBeInTheDocument();
     // expect(await screen.findByRole("span")).toBeInTheDocument();
 
-    screen.debug();
+    // screen.debug();
   });
 
   test("userSignupPage 컴포넌트에 prop (action) 이 주어지지 않은 case", () => {
