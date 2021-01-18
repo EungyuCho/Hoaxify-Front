@@ -1,71 +1,71 @@
 // Refactoring 전
 
-import React from "react";
+import React from 'react';
 import {
   render,
   fireEvent,
   waitFor,
   waitForElementToBeRemoved,
-} from "@testing-library/react";
-import { UserSignupPage } from "./UserSignupPage";
-import { User, UserSignupPageProps } from "../types";
+} from '@testing-library/react';
+import { UserSignupPage } from './UserSignupPage';
+import { User, UserSignupPageProps } from '../types';
 
-xdescribe("UserSignupPage", () => {
-  describe("Layout", () => {
-    test("has header of Sign Up", () => {
+xdescribe('UserSignupPage', () => {
+  describe('Layout', () => {
+    test('has header of Sign Up', () => {
       const { container } = render(<UserSignupPage />);
-      const header = container.querySelector("h1");
-      expect(header).toHaveTextContent("Sign Up");
+      const header = container.querySelector('h1');
+      expect(header).toHaveTextContent('Sign Up');
     });
 
-    test("has input for display name", () => {
+    test('has input for display name', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const displayNameInput = queryByPlaceholderText("Your display name");
+      const displayNameInput = queryByPlaceholderText('Your display name');
       expect(displayNameInput).toBeInTheDocument();
     });
 
-    test("has input for username", () => {
+    test('has input for username', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const userNameInput = queryByPlaceholderText("Your username");
+      const userNameInput = queryByPlaceholderText('Your username');
       expect(userNameInput).toBeInTheDocument();
     });
 
-    test("has input for password", () => {
+    test('has input for password', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const passwordInput = queryByPlaceholderText("Your password");
+      const passwordInput = queryByPlaceholderText('Your password');
       expect(passwordInput).toBeInTheDocument();
     });
 
-    test("has password type from password input", () => {
+    test('has password type from password input', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
       const passwordInput = queryByPlaceholderText(
-        "Your password"
+        'Your password'
       ) as HTMLInputElement;
-      expect(passwordInput?.type).toBe("password");
+      expect(passwordInput?.type).toBe('password');
     });
 
-    test("has input for password repeat", () => {
+    test('has input for password repeat', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const passwordRepeat = queryByPlaceholderText("Repeat your password");
+      const passwordRepeat = queryByPlaceholderText('Repeat your password');
       expect(passwordRepeat).toBeInTheDocument();
     });
 
-    test("has password type from password repeat input", () => {
+    test('has password type from password repeat input', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
       const passwordRepeat = queryByPlaceholderText(
-        "Repeat your password"
+        'Repeat your password'
       ) as HTMLInputElement | null;
-      expect(passwordRepeat?.type).toBe("password");
+      expect(passwordRepeat?.type).toBe('password');
     });
 
-    test("has submit button", () => {
+    test('has submit button', () => {
       const { container } = render(<UserSignupPage />);
-      const button = container.querySelector("button");
+      const button = container.querySelector('button');
       expect(button).toBeInTheDocument();
     });
   });
 
-  describe("Interactions", () => {
+  describe('Interactions', () => {
     const changeEvent = (content: string) => ({
       target: {
         value: content,
@@ -73,9 +73,9 @@ xdescribe("UserSignupPage", () => {
     });
 
     const expectedUserObject: User = {
-      displayName: "my-display-name",
-      password: "Password",
-      username: "my-user-name",
+      displayName: 'my-display-name',
+      password: 'Password',
+      username: 'my-user-name',
     };
 
     // 비동기 지연 mock
@@ -99,60 +99,60 @@ xdescribe("UserSignupPage", () => {
 
       const { container, queryByPlaceholderText } = rendered;
 
-      displayNameInput = queryByPlaceholderText("Your display name") as Element;
-      usernameInput = queryByPlaceholderText("Your username") as Element;
-      passwordInput = queryByPlaceholderText("Your password") as Element;
+      displayNameInput = queryByPlaceholderText('Your display name') as Element;
+      usernameInput = queryByPlaceholderText('Your username') as Element;
+      passwordInput = queryByPlaceholderText('Your password') as Element;
       passwordRepeat = queryByPlaceholderText(
-        "Repeat your password"
+        'Repeat your password'
       ) as Element;
 
-      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
-      fireEvent.change(usernameInput, changeEvent("my-user-name"));
-      fireEvent.change(passwordInput, changeEvent("Password"));
-      fireEvent.change(passwordRepeat, changeEvent("Password"));
+      fireEvent.change(displayNameInput, changeEvent('my-display-name'));
+      fireEvent.change(usernameInput, changeEvent('my-user-name'));
+      fireEvent.change(passwordInput, changeEvent('Password'));
+      fireEvent.change(passwordRepeat, changeEvent('Password'));
 
-      button = container.querySelector("button") as Element;
+      button = container.querySelector('button') as Element;
 
       return rendered;
     };
 
-    test("sets the dispalyName value into state", () => {
+    test('sets the dispalyName value into state', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
       const displayNameInput = queryByPlaceholderText(
-        "Your display name"
+        'Your display name'
       ) as Element;
 
-      fireEvent.change(displayNameInput, changeEvent("my-display-name"));
-      expect(displayNameInput).toHaveValue("my-display-name");
+      fireEvent.change(displayNameInput, changeEvent('my-display-name'));
+      expect(displayNameInput).toHaveValue('my-display-name');
     });
 
-    test("sets the userName value into state", () => {
+    test('sets the userName value into state', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const userNameInput = queryByPlaceholderText("Your username") as Element;
+      const userNameInput = queryByPlaceholderText('Your username') as Element;
 
-      fireEvent.change(userNameInput, changeEvent("my-user-name"));
-      expect(userNameInput).toHaveValue("my-user-name");
+      fireEvent.change(userNameInput, changeEvent('my-user-name'));
+      expect(userNameInput).toHaveValue('my-user-name');
     });
 
-    test("sets the password value into state", () => {
+    test('sets the password value into state', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
-      const passwordInput = queryByPlaceholderText("Your password") as Element;
+      const passwordInput = queryByPlaceholderText('Your password') as Element;
 
-      fireEvent.change(passwordInput, changeEvent("password"));
-      expect(passwordInput).toHaveValue("password");
+      fireEvent.change(passwordInput, changeEvent('password'));
+      expect(passwordInput).toHaveValue('password');
     });
 
-    test("sets the password repeat value into state", () => {
+    test('sets the password repeat value into state', () => {
       const { queryByPlaceholderText } = render(<UserSignupPage />);
       const passwordRepeat = queryByPlaceholderText(
-        "Repeat your password"
+        'Repeat your password'
       ) as Element;
 
-      fireEvent.change(passwordRepeat, changeEvent("password repeat"));
-      expect(passwordRepeat).toHaveValue("password repeat");
+      fireEvent.change(passwordRepeat, changeEvent('password repeat'));
+      expect(passwordRepeat).toHaveValue('password repeat');
     });
 
-    test("calls postSignup when the fields are valid and the actions are provided in props", () => {
+    test('calls postSignup when the fields are valid and the actions are provided in props', () => {
       const props: UserSignupPageProps = {
         actions: {
           postSignup: jest.fn().mockResolvedValue({}),
@@ -164,12 +164,12 @@ xdescribe("UserSignupPage", () => {
       expect(props.actions?.postSignup).toHaveBeenCalledTimes(1);
     });
 
-    test("does not throw exception when clicking the button when actions not provided in props", () => {
+    test('does not throw exception when clicking the button when actions not provided in props', () => {
       setupForSubmit();
       expect(() => fireEvent.click(button)).not.toThrow();
     });
 
-    test("calls post with user body when the fileds are valid", () => {
+    test('calls post with user body when the fileds are valid', () => {
       const props: UserSignupPageProps = {
         actions: {
           postSignup: jest.fn().mockResolvedValue({}),
@@ -183,7 +183,7 @@ xdescribe("UserSignupPage", () => {
       );
     });
 
-    test("ongoing api call 이 있을 경우 signup 버튼 동작하지 않음", () => {
+    test('ongoing api call 이 있을 경우 signup 버튼 동작하지 않음', () => {
       const props: UserSignupPageProps = {
         actions: {
           postSignup: mockAsyncDelayed(),
@@ -195,7 +195,7 @@ xdescribe("UserSignupPage", () => {
       expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번만 호출되는지 test
     });
 
-    test("ongoing api call 이 있을 경우 Spinner render 함", () => {
+    test('ongoing api call 이 있을 경우 Spinner render 함', () => {
       const props: UserSignupPageProps = {
         actions: {
           postSignup: mockAsyncDelayed(),
@@ -203,11 +203,11 @@ xdescribe("UserSignupPage", () => {
       };
       const { queryByText } = setupForSubmit(props);
       fireEvent.click(button);
-      const spinner = queryByText("Loading...");
+      const spinner = queryByText('Loading...');
       expect(spinner).toBeInTheDocument();
     });
 
-    test("api call 성공적으로 완료되면 Spinner 숨기기", async () => {
+    test('api call 성공적으로 완료되면 Spinner 숨기기', async () => {
       const props: UserSignupPageProps = {
         actions: {
           postSignup: mockAsyncDelayed(),
@@ -220,14 +220,14 @@ xdescribe("UserSignupPage", () => {
         () => expect(props.actions?.postSignup).toHaveBeenCalledTimes(1) // 한번 실행될 때까지 대기
       );
 
-      const spinner = queryByText("Loading...");
+      const spinner = queryByText('Loading...');
       await waitForElementToBeRemoved(spinner);
       // 사라질 때까지 대기 (꼭 필요한가? 하지만 현재 코드에선 반드시 있어야만 OK 됨)
 
       expect(spinner).not.toBeInTheDocument();
     });
 
-    test("api call 실패하면 Spinner 숨기기", async () => {
+    test('api call 실패하면 Spinner 숨기기', async () => {
       const props: UserSignupPageProps = {
         actions: {
           // reject Promise
@@ -249,7 +249,7 @@ xdescribe("UserSignupPage", () => {
         expect(props.actions?.postSignup).toHaveBeenCalledTimes(1); // 한번 실행될 때까지 대기
       });
 
-      const spinner = queryByText("Loading...");
+      const spinner = queryByText('Loading...');
       await waitForElementToBeRemoved(spinner);
       // 사라질 때까지 대기 (꼭 필요한가? 하지만 현재 코드에선 반드시 있어야만 OK 됨)
 

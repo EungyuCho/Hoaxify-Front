@@ -19,6 +19,15 @@
     "lint": "eslint --ext js,ts,tsx src",
     "eject": "react-scripts eject"
   },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged --verbose"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": "eslint --fix",
+    "**.{js,ts,tsx}": "prettier --write"
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
@@ -39,7 +48,10 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.6.0",
     "@types/jest": "^26.0.20",
-    "jest-environment-jsdom-sixteen": "^1.0.3"
+    "husky": "^4.3.8",
+    "jest-environment-jsdom-sixteen": "^1.0.3",
+    "lint-staged": "^10.5.3",
+    "prettier": "^2.2.1"
   },
   "proxy": "http://localhost:8080"
 }

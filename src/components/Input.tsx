@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 interface IInput {
   label?: string;
@@ -19,9 +19,9 @@ const Input: React.FC<IInput> = ({
   value,
   onChange,
 }) => {
-  let className = "form-control";
+  let className = 'form-control';
   if (hasError !== undefined) {
-    className += hasError ? " is-invalid" : " is-valid";
+    className += hasError ? ' is-invalid' : ' is-valid';
   }
   return (
     <div>
