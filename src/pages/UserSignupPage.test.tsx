@@ -188,7 +188,7 @@ describe("UserSignupPage Interaction Test", () => {
         postSignup: jest.fn().mockRejectedValue({
           response: {
             data: {
-              validtationErrors: {
+              validationErrors: {
                 displayName: testDisplayNameError,
               },
             },
