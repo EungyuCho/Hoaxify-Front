@@ -1,9 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import * as serviceWorker from "./serviceWorker";
-import { UserSignupPage } from "./pages/UserSignupPage";
-import * as apiCalls from "./api/apiCalls";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import * as serviceWorker from './serviceWorker';
+import { UserSignupPage } from './pages/UserSignupPage';
+import * as apiCalls from './api/apiCalls';
 
 const actions = {
   postSignup: apiCalls.signup,
@@ -11,7 +11,7 @@ const actions = {
 
 ReactDOM.render(
   <UserSignupPage actions={actions} />,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

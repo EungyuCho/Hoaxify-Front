@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { User, UserSignupPageProps } from "../types";
-import Input from "../components/Input";
+import React, { useState } from 'react';
+import { User, UserSignupPageProps } from '../types';
+import Input from '../components/Input';
 
 interface IError {
   displayName?: string;
@@ -10,10 +10,10 @@ interface IError {
 }
 
 export const UserSignupPage: React.FC<UserSignupPageProps> = ({ actions }) => {
-  const [displayName, setDisplayName] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordRepeat, setpasswordRepeat] = useState<string>("");
+  const [displayName, setDisplayName] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [passwordRepeat, setpasswordRepeat] = useState<string>('');
   const [hasPendingApiCall, setHasPendingApiCall] = useState<boolean>(false);
   const [errors, setErrors] = useState<IError>();
 
